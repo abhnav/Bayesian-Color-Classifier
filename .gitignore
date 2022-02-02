@@ -1,0 +1,5 @@
+./bin_detection/data/*
+./pixel_classfication/data/*
+./tests/testset/*
+./hola
+
