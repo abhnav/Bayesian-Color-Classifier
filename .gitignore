@@ -1,5 +1,7 @@
-./bin_detection/data/*
-./pixel_classfication/data/*
-./tests/testset/*
-./hola
+.*
+*.pyc
+bin_detection/data/
+pixel_classification/data/
+tests/testset/
+hola
 
