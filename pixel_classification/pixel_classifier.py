@@ -8,7 +8,7 @@ from generate_rgb_data import read_pixels
 import pdb
 
 class PixelClassifier():
-  def __init__(self, folder='data/training', X=None, y=None):
+  def __init__(self, folder='../pixel_classification/data/training', X=None, y=None):
     '''
 	    Initilize your classifier with any parameters and attributes you need
       Use folder to get data when X,y are not given.
@@ -25,7 +25,7 @@ class PixelClassifier():
     self.train(X,y)
 
   def read_data(self,folder):
-    X1 = read_pixels(folder+'/red', verbose = True)
+    X1 = read_pixels(folder+'/red')
     X2 = read_pixels(folder+'/green')
     X3 = read_pixels(folder+'/blue')
     y1, y2, y3 = np.full(X1.shape[0],1), np.full(X2.shape[0], 2), np.full(X3.shape[0],3)
@@ -47,6 +47,7 @@ class PixelClassifier():
       for d in np.arange(dim):
         self.ll_mean[cls,d] = X[y==self.classes[cls], d].mean()
         self.ll_std[cls,d] = X[y==self.classes[cls], d].std()
+    # pdb.set_trace()
 	
   def classify(self,X):
     '''
@@ -64,18 +65,25 @@ class PixelClassifier():
     # Replace this with your own approach 
     # y = 1 + np.random.randint(3, size=X.shape[0])
     
-    n = X.shape[0]
-    y = np.random.rand(X.shape[0])
-    for i in np.arange(n):
-      x = X[i,:][np.newaxis,:] # 1 x dim matrix
-      pr = -0.5 * ((x - self.ll_mean)**2)  / (self.ll_std**2)
-      pr = np.exp(pr) / self.ll_std
-      pr = np.sum(np.log(pr), axis=1)
-      pr = pr + np.log(self.prior)
-      cli = np.argmax(pr) # get the class that scores the highest
-      cls = self.classes[cli]
-      y[i] = cls
-    # YOUR CODE BEFORE THIS LINE
-    ################################################################
-    return y
+    pr = ((X[:,np.newaxis, ...] - self.ll_mean[np.newaxis, ...])/
+        (self.ll_std[np.newaxis, ...])) ** 2
+    pr = np.exp(-0.5*pr) / self.ll_std[np.newaxis,...]
+    pr = np.sum(np.log(pr), axis=2)
+    # original prior array for train_data1:
+    # ([0.88636338, 0.11363662])
+    # original prior array for train_data2:
+    # ([0.59548022, 0.10818053, 0.0263083 , 0.27003095])
+
+    # self.prior = np.array([0.5, 0.50,0,0])
+    # self.prior = np.array([0.82, 0.18,])
+
+    # Good one with validation
+    # self.prior = np.array([0.5,0.6,0.05])
+
+    # Good one as well
+    self.prior = np.array([0.47,0.46,0.081])
+
+    pr = pr + np.log(self.prior)[np.newaxis,...]
+    cli = np.argmax(pr, axis=1)
+    return self.classes[cli]
 

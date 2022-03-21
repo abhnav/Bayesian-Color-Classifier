@@ -53,11 +53,11 @@ if __name__ == '__main__':
         true_boxes = yaml.safe_load(stream)
       
       # show image
-      for box in true_boxes:
-        cv2.rectangle(img, (box[0], box[1]), (box[2], box[3]), (0,0,255), 2)
-      cv2.imshow('image', img)
-      cv2.waitKey(0)
-      cv2.destroyAllWindows()
+      # for box in true_boxes:
+        # cv2.rectangle(img, (box[0], box[1]), (box[2], box[3]), (0,0,255), 2)
+      # cv2.imshow('image', img)
+      # cv2.waitKey(0)
+      # cv2.destroyAllWindows()
 
       # convert from BGR (opencv convention) to RGB (everyone's convention)
       img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)

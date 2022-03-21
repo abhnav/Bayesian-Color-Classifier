@@ -4,4 +4,5 @@ bin_detection/data/
 pixel_classification/data/
 tests/testset/
 hola
-
+bin_detection/train_data2.npy
+bin_detection/train_data_back.npy
